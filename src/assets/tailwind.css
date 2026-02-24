@@ -1,0 +1,17 @@
+@import "tailwindcss"; /* Đây là cách viết mới của v4 thay cho @tailwind base/components/utilities */
+
+/* Các cấu hình màu sắc bạn có thể viết trực tiếp vào đây bằng CSS Variables nếu thích */
+@theme {
+  --color-primary: #137fec;
+  --color-background-light: #f6f7f8;
+  --color-background-dark: #101922;
+}
+
+/* Custom scrollbar vẫn giữ nguyên */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 10px;
+}

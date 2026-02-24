@@ -1,18 +1,32 @@
 <script setup>
 import { ref } from 'vue'
-
+import EquipmentCard from './components/EquipmentCard.vue'
+import LineSelector from './components/LineSelector.vue'
 const activeLine = ref(1)
 
 // Dữ liệu mẫu y hệt các thẻ HTML bạn đã gửi
 const devices = ref([
-  { id: 1, name: 'CNC Machine 01', assetId: 'CNC-8821', status: 'Running', temp: 45, load: 82, icon: 'settings_input_component' },
+  { id: 1, name: 'LED01', assetId: '1234', status: 'Running', temp: 45, load: 82, icon: 'settings_input_component' },
   { id: 2, name: 'Conveyor Belt 01', assetId: 'CV-1004', status: 'Error', temp: 88, load: 95, icon: 'conveyor_belt' },
   { id: 3, name: 'Hydraulic Press 02', assetId: 'HP-5502', status: 'Standby', temp: 25, load: 15, icon: 'bolt' },
   { id: 4, name: 'Robotic Arm 03', assetId: 'RA-9003', status: 'Running', temp: 41, load: 75, icon: 'precision_manufacturing' },
+  { id: 5, name: 'Robotic Arm 03', assetId: 'RA-9003', status: 'Running', temp: 41, load: 75, icon: 'precision_manufacturing' },
+  { id: 6, name: 'Robotic Arm 03', assetId: 'RA-9003', status: 'Running', temp: 41, load: 75, icon: 'precision_manufacturing' },
+  { id: 7, name: 'Robotic Arm 03', assetId: 'RA-9003', status: 'Running', temp: 41, load: 75, icon: 'precision_manufacturing' },
+  { id: 8, name: 'Robotic Arm 03', assetId: 'RA-9003', status: 'Running', temp: 41, load: 75, icon: 'precision_manufacturing' },
   // Thêm cho đủ 16 thiết bị...
 ])
 
+
+
 const lines = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+// Hàm xử lý khi người dùng chọn Line mới
+const handleLineChange = (lineId) => {
+  activeLine.value = lineId
+  console.log("Đang chuyển sang dữ liệu của Dây chuyền:", lineId)
+  // Sau này bạn sẽ gọi API C# tại đây: fetchData(lineId)
+}
 </script>
 
 <template>
@@ -61,7 +75,7 @@ const lines = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
       </div>
     </header>
 
-    <div class="grid grid-cols-4 gap-4 px-8 pt-6">
+    <!-- <div class="grid grid-cols-4 gap-4 px-8 pt-6">
       <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
         <p class="text-sm text-slate-500 mb-1">Total Power Consumption</p>
         <div class="flex items-end justify-between"><span class="text-2xl font-bold">1,240 kW</span><span class="text-emerald-500 text-xs font-semibold flex items-center mb-1"><span class="material-symbols-outlined text-sm">trending_down</span> 4.2%</span></div>
@@ -78,12 +92,16 @@ const lines = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         <p class="text-sm text-slate-500 mb-1">Active Errors</p>
         <div class="flex items-end justify-between"><span class="text-2xl font-bold text-rose-500">1</span><span class="bg-rose-500/10 text-rose-500 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase mb-1">Critical</span></div>
       </div>
-    </div>
+    </div> -->
 
     <div class="flex-1 overflow-y-auto p-8 custom-scrollbar">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 pb-24">
-        
-        <div v-for="device in devices" :key="device.id" 
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 pb-24">
+        <EquipmentCard 
+      v-for="item in devices" 
+      :key="item.id" 
+      :device="item" 
+    />
+        <!-- <div v-for="device in devices" :key="device.id" 
           class="bg-white dark:bg-slate-900 rounded-xl border-y border-r border-slate-200 dark:border-slate-800 p-4 shadow-sm hover:shadow-md transition-all group cursor-pointer border-l-4"
           :class="{
             'border-l-emerald-500': device.status === 'Running',
@@ -120,21 +138,16 @@ const lines = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
                 :style="{ width: device.temp + '%' }"></div>
             </div>
           </div>
-        </div>
+        </div> -->
 
       </div>
     </div>
 
-    <footer class="h-16 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-8 flex items-center gap-2 sticky bottom-0 z-20">
-      <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mr-4">Production Lines</div>
-      <button v-for="line in lines" :key="line" 
-        @click="activeLine = line"
-        class="flex-1 max-w-[140px] h-10 flex items-center justify-between px-4 rounded-lg transition-all"
-        :class="activeLine === line ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'">
-        <span class="text-sm font-bold">Line {{ line }}</span>
-        <span class="w-1.5 h-1.5 rounded-full" :class="line === 1 ? 'bg-rose-400' : 'bg-emerald-500'"></span>
-      </button>
-    </footer>
+    <LineSelector 
+      :lines="lines" 
+      :active-line="activeLine" 
+      @select-line="handleLineChange" 
+    />
   </main>
 </template>
 
