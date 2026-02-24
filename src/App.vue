@@ -1,21 +1,10 @@
 <script setup>
 import { ref } from 'vue'
-import EquipmentCard from './components/EquipmentCard.vue'
 import LineSelector from './components/LineSelector.vue'
 const activeLine = ref(1)
+import { RouterLink, RouterView } from 'vue-router'
 
-// Dữ liệu mẫu y hệt các thẻ HTML bạn đã gửi
-const devices = ref([
-  { id: 1, name: 'LED01', assetId: '1234', status: 'Running', temp: 45, load: 82, icon: 'settings_input_component' },
-  { id: 2, name: 'Conveyor Belt 01', assetId: 'CV-1004', status: 'Error', temp: 88, load: 95, icon: 'conveyor_belt' },
-  { id: 3, name: 'Hydraulic Press 02', assetId: 'HP-5502', status: 'Standby', temp: 25, load: 15, icon: 'bolt' },
-  { id: 4, name: 'Robotic Arm 03', assetId: 'RA-9003', status: 'Running', temp: 41, load: 75, icon: 'precision_manufacturing' },
-  { id: 5, name: 'Robotic Arm 03', assetId: 'RA-9003', status: 'Running', temp: 41, load: 75, icon: 'precision_manufacturing' },
-  { id: 6, name: 'Robotic Arm 03', assetId: 'RA-9003', status: 'Running', temp: 41, load: 75, icon: 'precision_manufacturing' },
-  { id: 7, name: 'Robotic Arm 03', assetId: 'RA-9003', status: 'Running', temp: 41, load: 75, icon: 'precision_manufacturing' },
-  { id: 8, name: 'Robotic Arm 03', assetId: 'RA-9003', status: 'Running', temp: 41, load: 75, icon: 'precision_manufacturing' },
-  // Thêm cho đủ 16 thiết bị...
-])
+
 
 
 
@@ -74,74 +63,10 @@ const handleLineChange = (lineId) => {
         </button>
       </div>
     </header>
+    <RouterView />
+    
 
-    <!-- <div class="grid grid-cols-4 gap-4 px-8 pt-6">
-      <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-        <p class="text-sm text-slate-500 mb-1">Total Power Consumption</p>
-        <div class="flex items-end justify-between"><span class="text-2xl font-bold">1,240 kW</span><span class="text-emerald-500 text-xs font-semibold flex items-center mb-1"><span class="material-symbols-outlined text-sm">trending_down</span> 4.2%</span></div>
-      </div>
-      <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-        <p class="text-sm text-slate-500 mb-1">Overall Efficiency</p>
-        <div class="flex items-end justify-between"><span class="text-2xl font-bold">94.8%</span><span class="text-emerald-500 text-xs font-semibold flex items-center mb-1"><span class="material-symbols-outlined text-sm">trending_up</span> 0.8%</span></div>
-      </div>
-      <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-        <p class="text-sm text-slate-500 mb-1">Avg Operating Temp</p>
-        <div class="flex items-end justify-between"><span class="text-2xl font-bold">42.4°C</span><span class="text-rose-500 text-xs font-semibold flex items-center mb-1"><span class="material-symbols-outlined text-sm">trending_up</span> 2.1°C</span></div>
-      </div>
-      <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-        <p class="text-sm text-slate-500 mb-1">Active Errors</p>
-        <div class="flex items-end justify-between"><span class="text-2xl font-bold text-rose-500">1</span><span class="bg-rose-500/10 text-rose-500 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase mb-1">Critical</span></div>
-      </div>
-    </div> -->
-
-    <div class="flex-1 overflow-y-auto p-8 custom-scrollbar">
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 pb-24">
-        <EquipmentCard 
-      v-for="item in devices" 
-      :key="item.id" 
-      :device="item" 
-    />
-        <!-- <div v-for="device in devices" :key="device.id" 
-          class="bg-white dark:bg-slate-900 rounded-xl border-y border-r border-slate-200 dark:border-slate-800 p-4 shadow-sm hover:shadow-md transition-all group cursor-pointer border-l-4"
-          :class="{
-            'border-l-emerald-500': device.status === 'Running',
-            'border-l-rose-500 ring-1 ring-rose-500/30': device.status === 'Error',
-            'border-l-amber-500': device.status === 'Standby'
-          }">
-          
-          <div class="flex justify-between items-start mb-4">
-            <div :class="[
-              'p-2 rounded-lg', 
-              device.status === 'Running' ? 'bg-emerald-500/10 text-emerald-500' : 
-              device.status === 'Error' ? 'bg-rose-500/10 text-rose-500' : 'bg-amber-500/10 text-amber-500'
-            ]">
-              <span class="material-symbols-outlined">{{ device.icon }}</span>
-            </div>
-            <span :class="[
-              'text-[10px] font-bold px-2 py-0.5 rounded uppercase',
-              device.status === 'Running' ? 'text-emerald-500 bg-emerald-500/10' : 
-              device.status === 'Error' ? 'text-rose-500 bg-rose-500/10' : 'text-amber-500 bg-amber-500/10'
-            ]">{{ device.status }}</span>
-          </div>
-          
-          <h3 class="font-bold text-sm mb-1">{{ device.name }}</h3>
-          <p class="text-xs text-slate-500 mb-4">Asset ID: {{ device.assetId }}</p>
-          
-          <div class="space-y-3">
-            <div class="flex justify-between text-xs">
-              <span class="text-slate-400">Temperature</span>
-              <span class="font-medium" :class="device.status === 'Error' ? 'text-rose-500' : ''">{{ device.temp }}°C</span>
-            </div>
-            <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
-              <div class="h-full transition-all" 
-                :class="device.status === 'Error' ? 'bg-rose-500' : 'bg-emerald-500'" 
-                :style="{ width: device.temp + '%' }"></div>
-            </div>
-          </div>
-        </div> -->
-
-      </div>
-    </div>
+    
 
     <LineSelector 
       :lines="lines" 

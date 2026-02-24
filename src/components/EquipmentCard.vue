@@ -1,5 +1,5 @@
 <template>
-  <div 
+  <div @click="$router.push({ name: 'device-detail', params: { id: device.id } })"
     class="bg-white dark:bg-slate-900 rounded-xl border-y border-r border-slate-200 dark:border-slate-800 p-4 shadow-sm hover:shadow-md transition-all group cursor-pointer border-l-4"
     :class="statusClasses.cardBorder"
   >
